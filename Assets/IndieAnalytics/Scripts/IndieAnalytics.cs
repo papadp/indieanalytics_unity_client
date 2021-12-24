@@ -184,6 +184,11 @@ namespace IndieAnalytics
             return request;
         }
 
+        public void SendProgressionEvent(string progression_name)
+        {
+            SendEvent(IndieAnalyticsEventType.Progression.ToString(), new { progression_name = progression_name });
+        }
+        
         void OnApplicationQuit()
         {
             SendEvent(IndieAnalyticsEventType.EndSession.ToString());
