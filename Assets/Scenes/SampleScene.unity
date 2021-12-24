@@ -217,14 +217,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: IndieAnalytics
       objectReference: {fileID: 0}
-    - target: {fileID: 8989827173105050424, guid: adc42d07b5626680da347ef6a313febf, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8989827173105050425, guid: adc42d07b5626680da347ef6a313febf, type: 3}
-      propertyPath: client_key
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8989827173105050566, guid: adc42d07b5626680da347ef6a313febf, type: 3}
       propertyPath: m_RootOrder
       value: 1
