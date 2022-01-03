@@ -1,0 +1,11 @@
+{
+	"name": "com.indieanalytics.client",
+        "displayName": "IndieAnalytics Client",
+	"version": "0.0.1",
+	"unity": "2018.3",
+	"description": "IndieAnalytics client",
+	"dependencies": {
+		"com.unity.modules.unitywebrequest": "1.0.0",
+		"com.unity.nuget.newtonsoft-json": "2.0.0"
+	}
+}
