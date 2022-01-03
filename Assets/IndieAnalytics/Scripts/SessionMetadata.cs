@@ -16,8 +16,6 @@ namespace IndieAnalytics
 
         public int seq_no;
 
-        private float context_last_set = 0f;
-
         public Object last_event;
 
         public SessionMetadata()

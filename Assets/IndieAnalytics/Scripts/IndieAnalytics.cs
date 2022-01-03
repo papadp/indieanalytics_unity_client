@@ -6,20 +6,21 @@ using System.Text;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using Object = System.Object;
 
 namespace IndieAnalytics
 {
     public class IndieAnalytics : MonoBehaviour
     {
-        // private string event_endpoint = "https://analytics.jimjum.io:8080";
-        private string event_endpoint = "http://127.0.0.1:8080";
+        private string event_endpoint = "https://es.indie-analytics.com:7070";
         private SessionMetadata session_meta;
         private ClientMetadata client_meta;
 
         private float session_start_time;
 
         private string auth_header_value;
+        private string game_header_value;
 
         private static DataSerializer<ClientMetadata> client_data_serializer;
 
@@ -30,8 +31,6 @@ namespace IndieAnalytics
         private bool initialized = false;
 
         private string relative_data_dir_path = "/indieanalytics";
-
-        private string game_name = "test_game";
 
         // Start is called before the first frame update
         private void Awake()
@@ -51,11 +50,27 @@ namespace IndieAnalytics
 
             CreateNewSessionData();
 
-            BuildAuthHeaderValue();
+            BuildIndieAnalyticsHeaderValues();
 
             initialized = true;
 
+            OnInitialized();
+        }
+
+        private void OnInitialized()
+        {
+            DataSerializer<bool> played_before_serializer = new DataSerializer<bool>(relative_data_dir_path + "/ia_firstplay");
+            bool played_before = played_before_serializer.Load();
+
+            if (!played_before)
+            {
+                SendEvent(IndieAnalyticsEventType.FirstPlay.ToString());
+                played_before_serializer.Save(true);
+            }
+
             SendEvent(IndieAnalyticsEventType.StartSession.ToString());
+            
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
         private void CreateDataDirIfNeeded()
@@ -68,12 +83,12 @@ namespace IndieAnalytics
             }
         }
 
-        private void BuildAuthHeaderValue()
+        private void BuildIndieAnalyticsHeaderValues()
         {
-            string auth = String.Format("indie_analytics_user:{0}", client_key);
-            auth = Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(auth));
-            auth = "Basic " + auth;
+            string auth = client_key;
+
             auth_header_value = auth;
+            game_header_value = auth.Substring(0, 16);
         }
 
         private ClientMetadata CreateNewClientData()
@@ -121,6 +136,11 @@ namespace IndieAnalytics
 
         public void SendEvent(string event_type, Object custom_event_data = null)
         {
+            if (!initialized)
+            {
+                Debug.LogWarning("Cant send event, not initialized yet");
+            }
+            
             EventMessage event_message = new EventMessage { event_name = event_type };
 
             StartCoroutine(PostMessageRoutine(event_message, custom_event_data));
@@ -163,6 +183,7 @@ namespace IndieAnalytics
                 event_message = event_message
             });
 
+            // Race condition on increment here
             session_meta.IncrementSequenceNumber();
         }
 
@@ -175,18 +196,25 @@ namespace IndieAnalytics
             byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
             request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
             request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+            
             request.SetRequestHeader("Content-Type", "application/json");
-            request.SetRequestHeader("Authorization", auth_header_value);
-            request.SetRequestHeader("IndieAnalytics-Message-Type", message_type);
-            request.SetRequestHeader("IndieAnalytics-Game", game_name);
+            
+            request.SetRequestHeader("IA-Key-Authorization", auth_header_value);
+            request.SetRequestHeader("IA-Message-Type", message_type);
+            request.SetRequestHeader("IA-Game", game_header_value);
 
             req = request.SendWebRequest();
             return request;
         }
 
-        public void SendProgressionEvent(string progression_name)
+        public void SendProgressionEvent(string name)
         {
-            SendEvent(IndieAnalyticsEventType.Progression.ToString(), new { progression_name = progression_name });
+            SendEvent(IndieAnalyticsEventType.Progression.ToString(), new { name = name });
+        }
+
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            SendEvent(IndieAnalyticsEventType.SceneLoaded.ToString(), new { scene_name = scene.name });
         }
         
         void OnApplicationQuit()

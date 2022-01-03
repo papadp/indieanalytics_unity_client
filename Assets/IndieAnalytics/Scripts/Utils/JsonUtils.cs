@@ -14,7 +14,7 @@ namespace IndieAnalytics
             }
             catch (Exception e)
             {
-                Debug.LogWarning(String.Format("Cant find key {0} in json", selector));
+                Debug.LogWarning(String.Format("Cant find key {0} in json, exception {1}", selector, e.ToString()));
                 return default_value;
             }
         }
