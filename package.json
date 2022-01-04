@@ -1,6 +1,6 @@
 {
 	"name": "com.indieanalytics.client",
-        "displayName": "com.indieanalytics.client",
+        "displayName": "Indie Analytics",
 	"version": "0.0.1",
 	"unity": "2018.3",
 	"description": "IndieAnalytics client",
