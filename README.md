@@ -1,4 +1,4 @@
-# IndieAnalytics Unity Client
+# [IndieAnalytics Unity Client](https://indie-analytics.com/)
 
 ## Installation
 
