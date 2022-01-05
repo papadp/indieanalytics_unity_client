@@ -10,6 +10,7 @@ using UnityEngine.SceneManagement;
 using Object = System.Object;
 using IndieAnalyticsInternal;
 
+[DefaultExecutionOrder(-10000)]
 public class IndieAnalytics : MonoBehaviour
 {
     private string event_endpoint = "https://es.indie-analytics.com:7070";
