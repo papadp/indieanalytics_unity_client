@@ -10,6 +10,17 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 
+[Ll]ibrary.meta
+[Tt]emp.meta
+[Oo]bj.meta
+[Bb]uild.meta
+[Bb]uilds.meta
+[Ll]ogs.meta
+[Uu]ser[Ss]ettings.meta
+*.csproj.meta
+*.sln.meta
+
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
