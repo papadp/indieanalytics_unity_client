@@ -1,4 +1,4 @@
-namespace IndieAnalytics
+namespace IndieAnalyticsInternal
 {
     public class EventMessage
     {

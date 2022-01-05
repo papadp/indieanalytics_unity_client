@@ -1,6 +1,6 @@
 using Object = System.Object;
 
-namespace IndieAnalytics
+namespace IndieAnalyticsInternal
 {
     public class IndieAnalyticsMessage
     {

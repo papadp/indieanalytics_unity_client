@@ -1,6 +1,6 @@
 using Newtonsoft.Json.Linq;
 
-namespace IndieAnalytics
+namespace IndieAnalyticsInternal
 {
     public class CustomDataHolder
     {

@@ -2,7 +2,7 @@ using System;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
-namespace IndieAnalytics
+namespace IndieAnalyticsInternal
 {
     [Serializable]
     public class ClientMetadata : CustomDataHolder

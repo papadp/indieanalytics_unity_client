@@ -2,7 +2,7 @@ using System.IO;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace IndieAnalytics
+namespace IndieAnalyticsInternal
 {
     public class DataSerializer<T>
     {
