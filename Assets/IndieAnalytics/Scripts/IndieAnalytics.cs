@@ -146,7 +146,7 @@ public class IndieAnalytics : MonoBehaviour
         session_meta = new SessionMetadata();
     }
 
-    public void SendEvent(string event_type, Object custom_event_data = null)
+    public void SendEvent(string event_name, Object custom_event_data = null)
     {
         if (!initialized)
         {
@@ -154,7 +154,7 @@ public class IndieAnalytics : MonoBehaviour
             return;
         }
         
-        EventMessage event_message = new EventMessage { event_name = event_type };
+        EventMessage event_message = new EventMessage { event_name = event_name };
 
         StartCoroutine(PostMessageRoutine(event_message, custom_event_data));
     }
@@ -219,9 +219,9 @@ public class IndieAnalytics : MonoBehaviour
         return request;
     }
 
-    public void SendProgressionEvent(string name)
+    public void SendProgressionEvent(string name, string progression_type="DefaultProgression")
     {
-        SendEvent(IndieAnalyticsEventType.Progression.ToString(), new { name = name });
+        SendEvent(IndieAnalyticsEventType.Progression.ToString(), new { name = name, progression_type=progression_type });
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
